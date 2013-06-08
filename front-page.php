@@ -1,13 +1,13 @@
 <?php get_header(); ?>
 
 <h2> Welcome </h2>
-<pre>
-<?php if ( isset( $_GET['form_submited'] ) && $_GET['form_submited'] == '1' ) {
 
-    get_template_part('create', 'trial');
+    <?php if ( isset( $_GET['form_submited'] ) && $_GET['form_submited'] == '1' ) {
+        echo '<div class="submited">';
+        get_template_part('create', 'trial');
+        echo '</div>';
+    } else { ?>
 
-} else { ?>
-</pre>
 
 <div id="conainer">
     <form class="register_form" action="/" method="GET">
@@ -27,6 +27,12 @@
                 <option value="">Select a theme</option>
                 <option value="2_senna">Senna</option>
                 <option value="3_swipe">Swipe</option>
+                <?php /*
+                       * DUDE if you ever wana insert another demo theme watch this
+                       * Create a new blog with the demo data and get the id of the blog
+                       * insert an option like this <option value="id_slug">Name</option>
+                       */
+                ?>
             </select>
         </fieldset>
         <input type="submit" value="Register"/>

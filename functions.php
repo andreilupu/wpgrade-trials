@@ -64,14 +64,14 @@ class wpGrade_Trial {
                         _e("<span class=\"error\">Failed to create $new_table.</span>", 'wpgrade' );
                         $error = TRUE;
                     } else {
-                        _e("Table created: $new_table.<br>", 'wpgrade' );
+//                        _e("Table created: $new_table.<br>", 'wpgrade' );
                         // copy data from old_table to new_table
                         $result = $wpdb->query( "INSERT INTO $new_table SELECT * FROM $old_table[0]" );
                         if($result === FALSE) {
                             _e("<span class=\"error\">Failed to copy data from $old_table[0] to $new_table.</span>", 'wpgrade' );
                             $error = TRUE;
                         } else {
-                            _e("Copied data from $old_table[0] to $new_table.<br/>", 'wpgrade' );
+//                            _e("Copied data from $old_table[0] to $new_table.<br/>", 'wpgrade' );
 
 //                            if ( $new_table == $wpdb->prefix . $new_blog_id . "_posts" ) {
 //                                $wpdb->query( "UPDATE wp_posts WHERE post_type = `attachment` SET guid = REPLACE (guid, 'http://localhost/site', 'http://newsite')" );
@@ -144,18 +144,19 @@ class wpGrade_Trial {
         }
 
         //reset permalink structure
-        if(!$error) {
-            switch_to_blog($new_blog_id);
-            //_e("Switched from here to $new_blog_id to reset permalinks<br>", 'wpgrade' );
-            global $wp_rewrite;
-//            $wp_rewrite->init();
-            $wp_rewrite->flush_rules();
-            //now that we are here, update the date of the new site
-//            wpmu_update_blogs_date( );
-            //go back to admin
-//            restore_current_blog();
-            //_e("Permalinks updated.<br>", 'wpgrade' );
-        }
+//        if(!$error) {
+//            switch_to_blog($new_blog_id);
+//            //_e("Switched from here to $new_blog_id to reset permalinks<br>", 'wpgrade' );
+//            global $wp_rewrite;
+////            $wp_rewrite->init();
+//            $wp_rewrite->flush_rules();
+//            flush_rewrite_rules();
+//            //now that we are here, update the date of the new site
+////            wpmu_update_blogs_date( );
+//            //go back to admin
+////            restore_current_blog();
+//            //_e("Permalinks updated.<br>", 'wpgrade' );
+//        }
 
         // count succesfull and failed sites
         if(!$error) {
@@ -196,3 +197,77 @@ class wpGrade_Trial {
     }
 
 }
+
+function you_need_access() {
+//    $file = '/usr/share/nginx/trial/test.txt';
+//
+//    // Open the file to get existing content
+//    $current = file_get_contents($file);
+//// Append a new person to the file
+//    $current .= "Cron with NO NO NO access \n";
+//// Write the contents back to the file
+//    file_put_contents($file, $current);
+
+}
+
+function clear_old_trials(){
+    // get a list with all blog id's
+    global $wpdb;
+
+    // life sucks ... you need to exclude the blog demos from here
+    // 1 = the godfather
+    // 2 = senna
+    // 3 = swipe
+
+    $blogs = $wpdb->get_results("
+        SELECT blog_id
+        FROM {$wpdb->blogs}
+        WHERE site_id = '{$wpdb->siteid}'
+        AND spam = '0'
+        AND deleted = '0'
+        AND archived = '0'
+        AND blog_id != 1
+        AND blog_id != 2
+        AND blog_id != 3
+    ");
+
+    ob_start();
+
+    foreach ( $blogs as $blog ) {
+
+        // the freaking date
+        $registered_date = get_blog_details($blog->blog_id)->registered;
+        $now = new DateTime();
+//        echo '<pre>';
+//        var_dump( $registered_date );
+//        echo '</pre>';
+
+        $start_date = new DateTime( $registered_date );
+        $since_start = $start_date->diff( $now );
+//        echo $since_start->days.' days total<br>';
+//        echo $since_start->y.' years<br>';
+//        echo $since_start->m.' months<br>';
+//        echo $since_start->d.' days<br>';
+//        echo $since_start->h.' hours<br>';
+//        echo $since_start->i.' minutes<br>';
+//        echo $since_start->s.' seconds<br>';
+
+        if ( $since_start->h >= 3 ) {
+            echo '<p>I\'m kinda sorry but your are cut out</p>';
+
+            wpmu_delete_blog( $blog->blog_id , true);
+
+        } else {
+
+            echo '<p>you will live to tell teh story</p>';
+
+        }
+
+    }
+
+    echo ob_get_clean();
+    exit('Ciao!');
+}
+
+add_action('wp_ajax_clear_old_trials', 'clear_old_trials');
+add_action('wp_ajax_nopriv_clear_old_trials', 'you_need_access');

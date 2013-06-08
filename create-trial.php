@@ -23,12 +23,16 @@ if( !isset($_GET['theme']) || empty( $_GET['theme']) )  {
         echo $user_id->get_error_message();
 
     } else {
-
+        echo '<pre style="background-color: #ebebeb">';
         $trial->create_new_trial($username, $user_id, $email, $blog_id, $theme_name );
-
+        echo '</pre>';
     }
 
     if ( !empty($blog_id) ) {
-        echo 'Thank you for your submision! <br /> Check your email or <a href="/">Return</a>.<br />oopps Untill I send the email use "admin" as password';
+        echo '<p>Thank you for your submision! <br /> Check your email or <a href="/">Return</a>.</p>';
+
+        $user = get_user_by( 'id', $user_id );
+        echo 'Hey ' . $username . ' your account is created with the password "admin"';
+        echo '<p>Check your new website here: <a href="http://77.81.241.142/'.$theme_name.'-'.$username.'">http://77.81.241.142/'.$theme_name.'-'.$username.'</a></p>';
     }
 }
