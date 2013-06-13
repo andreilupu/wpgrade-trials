@@ -23,15 +23,42 @@
 <body <?php body_class(); ?> >
 <div id="wrap">
     <div id="page">
-        <header id="header" class="wrapper site-header-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="site-header">
-                        <nav class="site-navigation desktop" role="navigation">
-                            <?php //wpgrade_main_nav(); ?>
-                        </nav>
-                    </div>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="<?php bloginfo('url') ?>"><?php bloginfo('name'); ?></a>
+                    <div class="nav-collapse collapse">
+<!--                        <p class="navbar-text pull-right">-->
+<!--                            Logged in as <a href="#" class="navbar-link">Username</a>-->
+<!--                        </p>-->
+                        <ul class="nav">
+                            <li class="active"><a href="<?php bloginfo('url') ?>">Home</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
                 </div>
             </div>
-        </header>
-        <div id="content">
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3">
+                    <div class="well sidebar-nav">
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Pixelgrade Themes</li>
+                            <li class="active"><a href="#">Senna</a></li>
+                            <li><a href="#">Buy</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Demo</a></li>
+                            <li class="nav-header">Swipe</li>
+                            <li><a href="#">Buy</a></li>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Demo</a></li>
+                        </ul>
+                    </div><!--/.well -->
+                </div><!--/span-->
